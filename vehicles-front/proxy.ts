@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import {
   AUTH_COOKIE_NAME,
   AUTH_VERIFY_PATH,
-  USER_SERVICE_API_URL,
+  SERVER_USER_SERVICE_API_URL,
 } from "@/lib/constants";
 
 /**
@@ -37,9 +37,10 @@ export default async function proxy(req: NextRequest): Promise<NextResponse> {
   }
 
   // ── 2. Verify the token with NestJS ───────────────────────────────────────
+  console.log(SERVER_USER_SERVICE_API_URL, AUTH_VERIFY_PATH);
   try {
     const verifyResponse = await fetch(
-      `${USER_SERVICE_API_URL}${AUTH_VERIFY_PATH}`,
+      `${SERVER_USER_SERVICE_API_URL}${AUTH_VERIFY_PATH}`,
       {
         method: "POST",
         headers: {

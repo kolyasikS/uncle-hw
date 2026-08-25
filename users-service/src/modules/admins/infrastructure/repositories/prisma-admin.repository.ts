@@ -9,7 +9,9 @@ export class PrismaAdminRepository implements AdminRepository {
   constructor(readonly prisma: PrismaService) {}
 
   async getByEmail(email: string): Promise<Admin | null> {
-    const found = await this.prisma.admin.findUnique({ where: { email } });
+    const found = await this.prisma.admin.findUnique({
+      where: { email },
+    });
 
     if (!found) {
       return null;

@@ -19,7 +19,9 @@ let PrismaAdminRepository = class PrismaAdminRepository {
         this.prisma = prisma;
     }
     async getByEmail(email) {
-        const found = await this.prisma.admin.findUnique({ where: { email } });
+        const found = await this.prisma.admin.findUnique({
+            where: { email },
+        });
         if (!found) {
             return null;
         }

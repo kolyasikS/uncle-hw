@@ -30,7 +30,9 @@ let PrismaUserRepository = class PrismaUserRepository {
         return found.map((user) => user_mapper_1.UserMapper.toDomain(user));
     }
     async getByEmail(email) {
-        const found = await this.prisma.user.findUnique({ where: { email } });
+        const found = await this.prisma.user.findUnique({
+            where: { email },
+        });
         if (!found) {
             return null;
         }

@@ -1,0 +1,170 @@
+services:
+  # =========================
+  # Frontend
+  # =========================
+  frontend:
+    build:
+      context: ./vehicles-front
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      NEXT_PUBLIC_USER_SERVICE_API_URL: http://users-service:3001
+      NEXT_PUBLIC_VEHICLE_SERVICE_API_URL: http://vehicle-service:3002
+      SERVER_USER_SERVICE_API_URL: http://users-service:3001
+      AUTH_COOKIE_NAME: ACCESS_TOKEN
+      AUTH_VERIFY_PATH: /auth/verify
+    depends_on:
+      - users-service
+      - vehicle-service
+    networks:
+      - app-network
+
+  # =========================
+  # Services
+  # =========================
+  users-service:
+    build:
+      context: ./users-service
+      dockerfile: Dockerfile
+    container_name: users-service
+    ports:
+      - "3001:3001"
+    environment:
+      NODE_ENV: development
+      PORT: 3001
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/app
+      REDIS_URL: redis://redis:6379
+      RABBITMQ_URL: amqp://admin:admin@rabbitmq:5672
+      JWT_SECRET: soul
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  vehicle-service:
+    build:
+      context: ./vehicles-service
+      dockerfile: Dockerfile
+    container_name: vehicle-service
+    ports:
+      - "3002:3002"
+    environment:
+      NODE_ENV: development
+      PORT: 3002
+      MONGODB_URL: mongodb://admin:secret@mongo:27017/vehicle-service?authSource=admin
+      RABBITMQ_URL: amqp://admin:admin@rabbitmq:5672
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      mongo:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - app-network
+
+  # =========================
+  # PostgreSQL
+  # =========================
+  postgres:
+    image: postgres:17
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: app
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d app"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - app-network
+
+  # =========================
+  # MongoDB
+  # =========================
+  mongo:
+    image: mongo:8
+    container_name: mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: secret
+      MONGO_INITDB_DATABASE: vehicle-service
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - app-network
+
+  # =========================
+  # Redis
+  # =========================
+  redis:
+    image: redis:8-alpine
+    container_name: redis-service
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - app-network
+
+  # =========================
+  # RabbitMQ
+  # =========================
+  rabbitmq:
+    image: rabbitmq:4-management
+    container_name: rabbitmq-service
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - app-network
+
+  # =========================
+  # Volumes
+  # =========================
+
+volumes:
+  postgres-data:
+  mongo-data:
+  redis-data:
+  rabbitmq-data:
+
+# =========================
+# Network
+# =========================
+
+networks:
+  app-network:
+    driver: bridge

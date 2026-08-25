@@ -1,7 +1,7 @@
 import cors from "cors";
 import express from "express";
+import "module-alias/register";
 import { initializeContainers } from "@/application/containers/index.js";
-import { VehicleContainer } from "@/application/containers/vehicle.container.ts";
 import { errorHandler } from "@/domain/errors/handlers/global-error.handler.js";
 import { connectToDB } from "@/infrastructure/config/database.js";
 import { connectRabbitMQ } from "@/infrastructure/config/rabbitmq.js";

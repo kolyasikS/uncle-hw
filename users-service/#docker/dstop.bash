@@ -1,0 +1,1 @@
+docker stop rabbitmq mongodb postgres-local redis

@@ -1,0 +1,42 @@
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.UpdateUserUseCase = void 0;
+const common_1 = require("@nestjs/common");
+const constants_1 = require("../../../../domain/constants");
+const domain_exceptions_1 = require("../../../../domain/exceptions/domain.exceptions");
+const user_entity_1 = require("../../domain/domain/entities/user.entity");
+let UpdateUserUseCase = class UpdateUserUseCase {
+    userRepository;
+    constructor(userRepository) {
+        this.userRepository = userRepository;
+    }
+    async execute(id, dto) {
+        const existingUser = await this.userRepository.getById(id);
+        if (!existingUser) {
+            throw new domain_exceptions_1.UserNotFoundException(id);
+        }
+        const user = user_entity_1.User.update(existingUser, {
+            email: dto.email,
+        });
+        return this.userRepository.update(user);
+    }
+};
+exports.UpdateUserUseCase = UpdateUserUseCase;
+exports.UpdateUserUseCase = UpdateUserUseCase = __decorate([
+    (0, common_1.Injectable)(),
+    __param(0, (0, common_1.Inject)(constants_1.USER_REPOSITORY)),
+    __metadata("design:paramtypes", [Object])
+], UpdateUserUseCase);
+//# sourceMappingURL=update-user.use-case.js.map

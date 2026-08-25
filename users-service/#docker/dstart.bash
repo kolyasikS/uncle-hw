@@ -1,0 +1,1 @@
+docker start rabbitmq mongodb postgres-local redis 

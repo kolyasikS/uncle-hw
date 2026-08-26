@@ -1,0 +1,7 @@
+model Admin {
+  id       String @id @default(uuid(7)) @db.Uuid
+  email    String @unique
+  password String
+
+  @@map("admins")
+}

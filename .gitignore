@@ -1,3 +1,5 @@
-db/
+db-dg/
 node_modules/
 .idea/
+\#docker/
+dist/

@@ -55,12 +55,14 @@ jobs:
         run: |
           REGISTRY=${{ secrets.ECR_REGISTRY }}
           TAG=${{ github.sha }}
-
+          
           docker build \
+            --build-arg NEXT_PUBLIC_USER_SERVICE_API_URL="${{ secrets.NEXT_PUBLIC_USER_SERVICE_API_URL }}" \
+            --build-arg NEXT_PUBLIC_VEHICLE_SERVICE_API_URL="${{ secrets.NEXT_PUBLIC_VEHICLE_SERVICE_API_URL }}" \
             -t $REGISTRY/uncle/nextjs:$TAG \
             -t $REGISTRY/uncle/nextjs:latest \
             ./front
-
+          
           docker push $REGISTRY/uncle/nextjs:$TAG
           docker push $REGISTRY/uncle/nextjs:latest
 

@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   front:
-    image: ${ECR_REGISTRY}/my-app/front:latest
+    image: ${ECR_REGISTRY}/uncle/nextjs:latest
     ports:
       - "3000:3000"
     env_file:
@@ -13,7 +13,7 @@ services:
     restart: always
 
   users-service:
-    image: ${ECR_REGISTRY}/my-app/users-service:latest
+    image: ${ECR_REGISTRY}/uncle/nestjs:latest
     ports:
       - "3001:3001"
     env_file:
@@ -25,7 +25,7 @@ services:
     restart: always
 
   vehicles-service:
-    image: ${ECR_REGISTRY}/my-app/vehicles-service:latest
+    image: ${ECR_REGISTRY}/uncle/express:latest
     ports:
       - "3002:3002"
     env_file:

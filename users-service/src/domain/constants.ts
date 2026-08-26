@@ -1,10 +1,10 @@
 // envs
 import "dotenv/config";
-export const DATABASE_URL = process.env.DATABASE_URL ?? "";
+export const DATABASE_URL = process.env.NESTJS_DATABASE_URL ?? "";
 export const RABBITMQ_URL = process.env.RABBITMQ_URL ?? "";
 export const REDIS_URL = process.env.REDIS_URL ?? "";
-export const JWT_SECRET = process.env.JWT_SECRET ?? "";
-export const NODE_ENV = process.env.NODE_ENV ?? "development";
+export const JWT_SECRET = process.env.NESTJS_JWT_SECRET ?? "";
+export const NODE_ENV = process.env.NESTJS_NODE_ENV ?? "development";
 
 // symbols
 export const ADMIN_REPOSITORY = Symbol("ADMIN_REPOSITORY");

@@ -30,6 +30,7 @@ export default async function proxy(req: NextRequest): Promise<NextResponse> {
     process.env.NEXT_AUTH_COOKIE_NAME ?? "",
   )?.value;
 
+  console.log('cookie_name', process.env.NEXT_AUTH_COOKIE_NAME, process.env.SERVER_USER_SERVICE_API_URL, process.env.AUTH_VERIFY_PATH);
   console.log("authToken", authToken);
   if (!authToken) {
     return redirectToAuth(req);

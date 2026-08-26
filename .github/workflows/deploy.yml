@@ -25,44 +25,44 @@ jobs:
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Build and push users-service (NestJS)
+      - name: Build and push nestjs (NestJS)
         run: |
           REGISTRY=${{ secrets.ECR_REGISTRY }}
           TAG=${{ github.sha }}
 
           docker build \
-            -t $REGISTRY/uncle/users-service:$TAG \
-            -t $REGISTRY/uncle/users-service:latest \
-            ./users-service
+            -t $REGISTRY/uncle/nestjs:$TAG \
+            -t $REGISTRY/uncle/nestjs:latest \
+            ./nestjs
 
-          docker push $REGISTRY/uncle/users-service:$TAG
-          docker push $REGISTRY/uncle/users-service:latest
+          docker push $REGISTRY/uncle/nestjs:$TAG
+          docker push $REGISTRY/uncle/nestjs:latest
 
-      - name: Build and push vehicles-service (Express)
+      - name: Build and push express (Express)
         run: |
           REGISTRY=${{ secrets.ECR_REGISTRY }}
           TAG=${{ github.sha }}
 
           docker build \
-            -t $REGISTRY/uncle/vehicles-service:$TAG \
-            -t $REGISTRY/uncle/vehicles-service:latest \
-            ./vehicles-service
+            -t $REGISTRY/uncle/express:$TAG \
+            -t $REGISTRY/uncle/express:latest \
+            ./express
 
-          docker push $REGISTRY/uncle/vehicles-service:$TAG
-          docker push $REGISTRY/uncle/vehicles-service:latest
+          docker push $REGISTRY/uncle/express:$TAG
+          docker push $REGISTRY/uncle/express:latest
 
-      - name: Build and push front (Next.js)
+      - name: Build and push nextjs (Next.js)
         run: |
           REGISTRY=${{ secrets.ECR_REGISTRY }}
           TAG=${{ github.sha }}
 
           docker build \
-            -t $REGISTRY/uncle/front:$TAG \
-            -t $REGISTRY/uncle/front:latest \
-            ./front
+            -t $REGISTRY/uncle/nextjs:$TAG \
+            -t $REGISTRY/uncle/nextjs:latest \
+            ./nextjs
 
-          docker push $REGISTRY/uncle/front:$TAG
-          docker push $REGISTRY/uncle/front:latest
+          docker push $REGISTRY/uncle/nextjs:$TAG
+          docker push $REGISTRY/uncle/nextjs:latest
 
   # ----------------------------------------
   # JOB 2: Deploy to EC2

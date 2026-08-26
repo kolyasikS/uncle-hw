@@ -1,5 +1,6 @@
 import cors from "cors";
 import express from "express";
+import "dotenv/config";
 import "module-alias/register";
 import { initializeContainers } from "@/application/containers/index.js";
 import { errorHandler } from "@/domain/errors/handlers/global-error.handler.js";
@@ -17,7 +18,7 @@ async function bootstrap() {
   const app = express();
   app.use(
     cors({
-      origin: "http://localhost:3000",
+      origin: process.env.EXPRESS_ALLOWED_ORIGINS,
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     }),
   );

@@ -33,7 +33,7 @@ jobs:
           docker build \
             -t $REGISTRY/uncle/nestjs:$TAG \
             -t $REGISTRY/uncle/nestjs:latest \
-            ./nestjs
+            ./users-service
 
           docker push $REGISTRY/uncle/nestjs:$TAG
           docker push $REGISTRY/uncle/nestjs:latest
@@ -46,7 +46,7 @@ jobs:
           docker build \
             -t $REGISTRY/uncle/express:$TAG \
             -t $REGISTRY/uncle/express:latest \
-            ./express
+            ./vehicles-service
 
           docker push $REGISTRY/uncle/express:$TAG
           docker push $REGISTRY/uncle/express:latest
@@ -59,7 +59,7 @@ jobs:
           docker build \
             -t $REGISTRY/uncle/nextjs:$TAG \
             -t $REGISTRY/uncle/nextjs:latest \
-            ./nextjs
+            ./front
 
           docker push $REGISTRY/uncle/nextjs:$TAG
           docker push $REGISTRY/uncle/nextjs:latest

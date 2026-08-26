@@ -55,8 +55,11 @@ jobs:
         run: |
           REGISTRY=${{ secrets.ECR_REGISTRY }}
           TAG=${{ github.sha }}
-          
+
           docker build \
+            --build-arg NEXT_AUTH_COOKIE_NAME=${{secrets.NEXT_AUTH_COOKIE_NAME}} \
+            --build-arg NEXT_AUTH_VERIFY_PATH=${{secrets.NEXT_AUTH_VERIFY_PATH}} \
+            --build-arg NEXT_SERVER_USER_SERVICE_API_URL=${{secrets.NEXT_PUBLIC_USER_SERVICE_API_URL}} \
             --build-arg NEXT_PUBLIC_USER_SERVICE_API_URL="${{ secrets.NEXT_PUBLIC_USER_SERVICE_API_URL }}" \
             --build-arg NEXT_PUBLIC_VEHICLE_SERVICE_API_URL="${{ secrets.NEXT_PUBLIC_VEHICLE_SERVICE_API_URL }}" \
             -t $REGISTRY/uncle/nextjs:$TAG \

@@ -1,9 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import {
-  AUTH_COOKIE_NAME,
-  AUTH_VERIFY_PATH,
-  SERVER_USER_SERVICE_API_URL,
-} from "@/lib/constants";
+import { AUTH_VERIFY_PATH, SERVER_USER_SERVICE_API_URL } from "@/lib/constants";
 
 /**
  * Routes that are publicly accessible — no auth required.
@@ -30,7 +26,10 @@ export default async function proxy(req: NextRequest): Promise<NextResponse> {
   }
 
   // ── 1. Check for the auth cookie ──────────────────────────────────────────
-  const authToken = req.cookies.get(AUTH_COOKIE_NAME)?.value;
+  const authToken = req.cookies.get(
+    process.env.NEXT_AUTH_COOKIE_NAME ?? "",
+  )?.value;
+
   console.log("authToken", authToken);
   if (!authToken) {
     return redirectToAuth(req);

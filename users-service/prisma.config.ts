@@ -9,6 +9,6 @@ export default defineConfig({
     path: "db/prisma/migrations",
   },
   datasource: {
-    url: process.env["DATABASE_URL"],
+    url: process.env.NESTJS_DATABASE_URL,
   },
 });

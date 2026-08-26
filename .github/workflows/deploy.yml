@@ -1,0 +1,110 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  # ----------------------------------------
+  # JOB 1: Build images and push to ECR
+  # ----------------------------------------
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push users-service (NestJS)
+        run: |
+          REGISTRY=${{ secrets.ECR_REGISTRY }}
+          TAG=${{ github.sha }}
+
+          docker build \
+            -t $REGISTRY/uncle/users-service:$TAG \
+            -t $REGISTRY/uncle/users-service:latest \
+            ./users-service
+
+          docker push $REGISTRY/uncle/users-service:$TAG
+          docker push $REGISTRY/uncle/users-service:latest
+
+      - name: Build and push vehicles-service (Express)
+        run: |
+          REGISTRY=${{ secrets.ECR_REGISTRY }}
+          TAG=${{ github.sha }}
+
+          docker build \
+            -t $REGISTRY/uncle/vehicles-service:$TAG \
+            -t $REGISTRY/uncle/vehicles-service:latest \
+            ./vehicles-service
+
+          docker push $REGISTRY/uncle/vehicles-service:$TAG
+          docker push $REGISTRY/uncle/vehicles-service:latest
+
+      - name: Build and push front (Next.js)
+        run: |
+          REGISTRY=${{ secrets.ECR_REGISTRY }}
+          TAG=${{ github.sha }}
+
+          docker build \
+            -t $REGISTRY/uncle/front:$TAG \
+            -t $REGISTRY/uncle/front:latest \
+            ./front
+
+          docker push $REGISTRY/uncle/front:$TAG
+          docker push $REGISTRY/uncle/front:latest
+
+  # ----------------------------------------
+  # JOB 2: Deploy to EC2
+  # ----------------------------------------
+  deploy:
+    needs: build-and-push    # only runs if Job 1 succeeds
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Copy docker-compose.prod.yml to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ec2-user
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "docker-compose.prod.yml"
+          target: "/home/ec2-user/app/"
+
+      - name: SSH into EC2 and deploy
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ec2-user
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            # Login to ECR from EC2
+            aws ecr get-login-password --region ${{ secrets.AWS_REGION }} \
+              | docker login --username AWS \
+                --password-stdin ${{ secrets.ECR_REGISTRY }}
+
+            cd /home/ec2-user/app
+
+            # Pull new images from ECR
+            docker-compose -f docker-compose.prod.yml --env-file .env pull
+
+            # Restart all containers with new images
+            docker-compose -f docker-compose.prod.yml --env-file .env up -d
+
+            # Clean up old unused images to save disk space
+            docker image prune -f
+
+            echo "✅ Deploy complete"

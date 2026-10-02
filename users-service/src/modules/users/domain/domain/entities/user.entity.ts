@@ -5,13 +5,18 @@ export class User {
   constructor(
     public readonly id: string,
     public readonly email: string,
+    public readonly adminId: string,
   ) {}
 
   static create(createUserDto: CreateUserDto) {
-    return new User(crypto.randomUUID(), createUserDto.email);
+    return new User(
+      crypto.randomUUID(),
+      createUserDto.email,
+      createUserDto.adminId,
+    );
   }
 
   static update(existingUser: User, updateUserDto: UpdateUserDto) {
-    return new User(existingUser.id, updateUserDto.email);
+    return new User(existingUser.id, updateUserDto.email, existingUser.adminId);
   }
 }

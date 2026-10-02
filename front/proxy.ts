@@ -5,7 +5,7 @@ import { AUTH_VERIFY_PATH, SERVER_USER_SERVICE_API_URL } from "@/lib/constants";
  * Routes that are publicly accessible — no auth required.
  * Everything else is protected.
  */
-const PUBLIC_PATHS = ["/auth"];
+const PUBLIC_PATHS = ["/login", "/sign-up"];
 
 function isPublicPath(pathname: string): boolean {
   return PUBLIC_PATHS.some(
@@ -30,14 +30,11 @@ export default async function proxy(req: NextRequest): Promise<NextResponse> {
     process.env.NEXT_AUTH_COOKIE_NAME ?? "",
   )?.value;
 
-  console.log('cookie_name', process.env.NEXT_AUTH_COOKIE_NAME, process.env.SERVER_USER_SERVICE_API_URL, process.env.AUTH_VERIFY_PATH);
-  console.log("authToken", authToken);
   if (!authToken) {
     return redirectToAuth(req);
   }
 
   // ── 2. Verify the token with NestJS ───────────────────────────────────────
-  console.log(SERVER_USER_SERVICE_API_URL, AUTH_VERIFY_PATH);
   try {
     const verifyResponse = await fetch(
       `${SERVER_USER_SERVICE_API_URL}${AUTH_VERIFY_PATH}`,
@@ -51,7 +48,6 @@ export default async function proxy(req: NextRequest): Promise<NextResponse> {
         body: JSON.stringify({ token: authToken }),
       },
     );
-    console.log(verifyResponse);
     if (!verifyResponse.ok) {
       return redirectToAuth(req);
     }
@@ -67,7 +63,7 @@ export default async function proxy(req: NextRequest): Promise<NextResponse> {
 
 function redirectToAuth(req: NextRequest): NextResponse {
   const loginUrl = req.nextUrl.clone();
-  loginUrl.pathname = "/auth";
+  loginUrl.pathname = "/login";
   // Preserve the original destination so you can redirect back after login.
   loginUrl.searchParams.set("from", req.nextUrl.pathname);
   return NextResponse.redirect(loginUrl);

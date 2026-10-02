@@ -24,11 +24,14 @@ export class CreateUserUseCase {
 
     const user = User.create({
       email: dto.email,
+      adminId: dto.adminId,
     });
 
     const newUser = await this.userRepository.create(user);
 
-    await this.eventBus.publish([new UserCreatedEvent(newUser.id)]);
+    await this.eventBus.publish([
+      new UserCreatedEvent(newUser.id, newUser.adminId),
+    ]);
 
     return newUser;
   }

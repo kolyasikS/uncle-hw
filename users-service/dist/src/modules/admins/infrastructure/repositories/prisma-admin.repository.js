@@ -27,6 +27,13 @@ let PrismaAdminRepository = class PrismaAdminRepository {
         }
         return admin_mapper_1.AdminMapper.toDomain(found);
     }
+    async create(admin) {
+        const data = admin_mapper_1.AdminMapper.toPersistence(admin);
+        const created = await this.prisma.admin.create({
+            data,
+        });
+        return admin_mapper_1.AdminMapper.toDomain(created);
+    }
 };
 exports.PrismaAdminRepository = PrismaAdminRepository;
 exports.PrismaAdminRepository = PrismaAdminRepository = __decorate([

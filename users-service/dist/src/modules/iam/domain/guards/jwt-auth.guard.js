@@ -29,6 +29,7 @@ let JwtAuthGuard = class JwtAuthGuard {
             request[constants_1.JWT_PAYLOAD] = payload;
         }
         catch {
+            console.log("error");
             throw new common_1.UnauthorizedException();
         }
         return true;

@@ -1,6 +1,6 @@
 import { type ApiResponseType } from "../../../domain/api-response";
 import { CreateUserDto } from "../application/dto/create-user.dto";
-import { UpdateUserDto } from "../application/dto/update-user.dto";
+import { type UpdateUserDto } from "../application/dto/update-user.dto";
 import { CreateUserUseCase } from "../application/use-cases/create-user.use-case";
 import { DeleteUserUseCase } from "../application/use-cases/delete-user.use-case";
 import { GetUserByIdUseCase } from "../application/use-cases/get-user-by-id.use-case";
@@ -15,7 +15,7 @@ export declare class UsersController {
     private readonly deleteUserUseCase;
     constructor(getUsersUseCase: GetUsersUseCase, createUserUseCase: CreateUserUseCase, getUserByIdUseCase: GetUserByIdUseCase, updateUserUseCase: UpdateUserUseCase, deleteUserUseCase: DeleteUserUseCase);
     create(createUserDto: CreateUserDto): Promise<ApiResponseType<User>>;
-    getAll(): Promise<ApiResponseType<User[]>>;
+    getAll(adminId: string): Promise<ApiResponseType<User[]>>;
     getUserById(id: string): Promise<ApiResponseType<User | null>>;
     update(id: string, updateUserDto: UpdateUserDto): Promise<ApiResponseType<User>>;
     delete(id: string): Promise<ApiResponseType<User>>;

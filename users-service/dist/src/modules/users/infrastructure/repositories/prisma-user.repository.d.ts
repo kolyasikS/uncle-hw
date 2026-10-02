@@ -6,6 +6,7 @@ export declare class PrismaUserRepository implements UserRepository {
     constructor(prisma: PrismaService);
     create(user: User): Promise<User>;
     getAll(): Promise<User[]>;
+    getByAdminId(adminId: string): Promise<User[]>;
     getByEmail(email: string): Promise<User | null>;
     getById(id: string): Promise<User | null>;
     update(user: User): Promise<User>;

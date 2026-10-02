@@ -35,6 +35,7 @@ let SessionGuard = class SessionGuard {
         if (!session) {
             throw new common_1.UnauthorizedException("Session expired or revoked");
         }
+        request.adminId = session.adminId;
         return true;
     }
 };

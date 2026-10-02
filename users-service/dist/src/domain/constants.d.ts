@@ -4,8 +4,11 @@ export declare const RABBITMQ_URL: string;
 export declare const REDIS_URL: string;
 export declare const JWT_SECRET: string;
 export declare const NODE_ENV: string;
+export declare const MAIL_FROM: string;
 export declare const ADMIN_REPOSITORY: unique symbol;
+export declare const MAIL_REPOSITORY: unique symbol;
 export declare const USER_REPOSITORY: unique symbol;
+export declare const OTP_REPOSITORY: unique symbol;
 export declare const REDIS_CLIENT: unique symbol;
 export declare const DATABASE_URL_SYMBOL: unique symbol;
 export declare const REDIS_URL_SYMBOL: unique symbol;
@@ -28,3 +31,4 @@ export declare const SESSION_KEYS: {
 export declare const SESSION_TTL: number;
 export declare const AUTH_COOKIE_NAME = "ACCESS_TOKEN";
 export declare const JWT_PAYLOAD = "jwt_payload";
+export declare const OTP_TTL: number;

@@ -7,12 +7,14 @@ import {
 } from "@/lib/api/vehicles/vehicle.dto";
 import { useUpdateVehicle } from "@/lib/api/vehicles/vehicle.hooks";
 import { Vehicle } from "@/lib/entities/vehicle";
+import { useAdminStore } from "@/lib/stores/store";
 
 type Props = {
   onClose?: () => void;
   vehicle: Vehicle;
 };
 export function UpdateVehicleForm({ onClose, vehicle }: Props) {
+  const adminId = useAdminStore((store) => store.admin?.id ?? "");
   const form = useForm<UpdateVehicleDto>({
     resolver: zodResolver(updateVehicleSchema),
     defaultValues: {
@@ -27,6 +29,7 @@ export function UpdateVehicleForm({ onClose, vehicle }: Props) {
     isPending,
     isError,
   } = useUpdateVehicle({
+    adminId,
     onSuccess: onClose,
   });
 

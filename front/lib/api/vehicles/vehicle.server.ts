@@ -1,9 +1,7 @@
+import { QueryClient } from "@tanstack/react-query";
 import { VehicleApi } from "@/lib/api/vehicles/vehicle.api";
-import { createQueryClient } from "@/lib/config/network/ts-query";
 
-export const prefetchVehicles = async () => {
-  const queryClient = createQueryClient();
-
+export const prefetchVehicles = async (queryClient: QueryClient) => {
   await queryClient.prefetchQuery({
     queryKey: ["vehicles"],
     queryFn: VehicleApi.getVehicles,

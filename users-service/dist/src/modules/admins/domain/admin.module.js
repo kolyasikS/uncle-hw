@@ -9,6 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AdminModule = void 0;
 const common_1 = require("@nestjs/common");
 const constants_1 = require("../../../domain/constants");
+const create_admin_use_case_1 = require("../application/use-cases/create-admin.use-case");
 const get_admin_by_id_use_case_1 = require("../application/use-cases/get-admin-by-id.use-case");
 const prisma_admin_repository_1 = require("../infrastructure/repositories/prisma-admin.repository");
 let AdminModule = class AdminModule {
@@ -18,6 +19,7 @@ exports.AdminModule = AdminModule = __decorate([
     (0, common_1.Module)({
         providers: [
             get_admin_by_id_use_case_1.GetAdminByIdUseCase,
+            create_admin_use_case_1.CreateAdminUseCase,
             {
                 provide: constants_1.ADMIN_REPOSITORY,
                 useClass: prisma_admin_repository_1.PrismaAdminRepository,
@@ -25,6 +27,7 @@ exports.AdminModule = AdminModule = __decorate([
         ],
         exports: [
             get_admin_by_id_use_case_1.GetAdminByIdUseCase,
+            create_admin_use_case_1.CreateAdminUseCase,
             {
                 provide: constants_1.ADMIN_REPOSITORY,
                 useClass: prisma_admin_repository_1.PrismaAdminRepository,

@@ -16,7 +16,7 @@ export class SessionService {
     await this.sessionStore.set(
       `${key}:${sessionId}`,
       JSON.stringify({
-        id,
+        adminId: id,
       } satisfies Session),
       SESSION_TTL,
     );

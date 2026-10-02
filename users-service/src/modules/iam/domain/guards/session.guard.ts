@@ -44,6 +44,8 @@ export class SessionGuard implements CanActivate {
       throw new UnauthorizedException("Session expired or revoked");
     }
 
+    request.adminId = session.adminId;
+
     return true;
   }
 }

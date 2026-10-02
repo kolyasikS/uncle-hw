@@ -4,5 +4,6 @@ export declare class UserMapper {
     static toDomain(prismaUser: PrismaUser): User;
     static toPersistence(user: User): {
         email: string;
+        adminId: string;
     };
 }

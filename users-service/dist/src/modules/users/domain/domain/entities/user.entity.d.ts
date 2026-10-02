@@ -3,7 +3,8 @@ import { UpdateUserDto } from "../../../application/dto/update-user.dto";
 export declare class User {
     readonly id: string;
     readonly email: string;
-    constructor(id: string, email: string);
+    readonly adminId: string;
+    constructor(id: string, email: string, adminId: string);
     static create(createUserDto: CreateUserDto): User;
     static update(existingUser: User, updateUserDto: UpdateUserDto): User;
 }

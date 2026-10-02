@@ -12,6 +12,7 @@ import {
 } from "@nestjs/common";
 import { ApiResponse, type ApiResponseType } from "@/domain/api-response";
 import { EVENT_TYPES, ROLES } from "@/domain/constants";
+import { AdminId } from "@/domain/decorators/admin-id.decorator";
 import {
   createUserMessages,
   deleteUserMessages,
@@ -21,7 +22,7 @@ import {
 } from "@/domain/messages/user.messages";
 import { Session } from "@/modules/iam/domain/decorators/auth.decorator";
 import { CreateUserDto } from "@/modules/users/application/dto/create-user.dto";
-import { UpdateUserDto } from "@/modules/users/application/dto/update-user.dto";
+import { type UpdateUserDto } from "@/modules/users/application/dto/update-user.dto";
 import { CreateUserUseCase } from "@/modules/users/application/use-cases/create-user.use-case";
 import { DeleteUserUseCase } from "@/modules/users/application/use-cases/delete-user.use-case";
 import { GetUserByIdUseCase } from "@/modules/users/application/use-cases/get-user-by-id.use-case";
@@ -55,9 +56,9 @@ export class UsersController {
     });
   }
 
-  @Get()
-  async getAll(): Promise<ApiResponseType<User[]>> {
-    const users = await this.getUsersUseCase.execute();
+  @Get("")
+  async getAll(@AdminId() adminId: string): Promise<ApiResponseType<User[]>> {
+    const users = await this.getUsersUseCase.execute(adminId);
     return ApiResponse.success({
       data: users,
       statusCode: HttpStatus.OK,

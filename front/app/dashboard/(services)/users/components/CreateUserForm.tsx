@@ -3,15 +3,19 @@ import { useForm } from "react-hook-form";
 import { Button, Input, Label } from "@/components/ui";
 import { CreateUserDto, createUserSchema } from "@/lib/api/users/user.dto";
 import { useCreateUser } from "@/lib/api/users/user.hooks";
+import { useAdminStore } from "@/lib/stores/store";
 
 type Props = {
   onClose?: () => void;
 };
 export function CreateUserForm({ onClose }: Props) {
+  const adminId = useAdminStore((state) => state.admin?.id ?? "");
+  console.log("adminId", adminId);
   const form = useForm<CreateUserDto>({
     resolver: zodResolver(createUserSchema),
     defaultValues: {
       email: "",
+      adminId: adminId,
     },
   });
 
@@ -20,6 +24,7 @@ export function CreateUserForm({ onClose }: Props) {
     isPending,
     isError,
   } = useCreateUser({
+    adminId,
     onSuccess: onClose,
   });
 

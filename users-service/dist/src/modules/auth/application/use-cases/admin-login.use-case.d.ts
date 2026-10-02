@@ -1,11 +1,14 @@
 import { JwtService } from "@nestjs/jwt";
-import { type AdminRepository } from "../../../admins/domain/interfaces/admin.interface";
+import { GetAdminByIdUseCase } from "../../../admins/application/use-cases/get-admin-by-id.use-case";
 import { AdminLoginDto } from "../dto/admin-login.dto";
 import { SessionService } from "../../../iam/application/services/session.service";
 export declare class AdminLoginUseCase {
-    private readonly adminRepository;
+    private readonly getAdminByIdUseCase;
     private readonly sessionService;
     private readonly jwtService;
-    constructor(adminRepository: AdminRepository, sessionService: SessionService, jwtService: JwtService);
-    execute(adminLoginDto: AdminLoginDto): Promise<string>;
+    constructor(getAdminByIdUseCase: GetAdminByIdUseCase, sessionService: SessionService, jwtService: JwtService);
+    execute(adminLoginDto: AdminLoginDto): Promise<{
+        admin: import("../../../admins/domain/entities/admin.entity").Admin;
+        accessToken: string;
+    }>;
 }

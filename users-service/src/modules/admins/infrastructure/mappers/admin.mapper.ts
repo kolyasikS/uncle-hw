@@ -1,5 +1,8 @@
 import { AdminModel as PrismaAdmin } from "@db/generated/prisma/models";
-import { Admin } from "@/modules/admins/domain/entities/admin.entity";
+import {
+  Admin,
+  AdminHttp,
+} from "@/modules/admins/domain/entities/admin.entity";
 
 export class AdminMapper {
   static toDomain(prismaAdmin: PrismaAdmin): Admin {
@@ -7,6 +10,13 @@ export class AdminMapper {
   }
 
   static toPersistence(admin: Admin) {
+    return {
+      email: admin.email,
+      password: admin.password,
+    };
+  }
+
+  static toHttp(admin: Admin): AdminHttp {
     return {
       email: admin.email,
     };

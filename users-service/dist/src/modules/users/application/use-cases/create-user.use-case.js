@@ -32,9 +32,12 @@ let CreateUserUseCase = class CreateUserUseCase {
         }
         const user = user_entity_1.User.create({
             email: dto.email,
+            adminId: dto.adminId,
         });
         const newUser = await this.userRepository.create(user);
-        await this.eventBus.publish([new user_created_event_1.UserCreatedEvent(newUser.id)]);
+        await this.eventBus.publish([
+            new user_created_event_1.UserCreatedEvent(newUser.id, newUser.adminId),
+        ]);
         return newUser;
     }
 };

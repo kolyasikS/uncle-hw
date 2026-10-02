@@ -16,10 +16,10 @@ exports.UsersController = void 0;
 const common_1 = require("@nestjs/common");
 const api_response_1 = require("../../../domain/api-response");
 const constants_1 = require("../../../domain/constants");
+const admin_id_decorator_1 = require("../../../domain/decorators/admin-id.decorator");
 const user_messages_1 = require("../../../domain/messages/user.messages");
 const auth_decorator_1 = require("../../iam/domain/decorators/auth.decorator");
 const create_user_dto_1 = require("../application/dto/create-user.dto");
-const update_user_dto_1 = require("../application/dto/update-user.dto");
 const create_user_use_case_1 = require("../application/use-cases/create-user.use-case");
 const delete_user_use_case_1 = require("../application/use-cases/delete-user.use-case");
 const get_user_by_id_use_case_1 = require("../application/use-cases/get-user-by-id.use-case");
@@ -48,8 +48,8 @@ let UsersController = class UsersController {
             event: constants_1.EVENT_TYPES.USER_CREATED,
         });
     }
-    async getAll() {
-        const users = await this.getUsersUseCase.execute();
+    async getAll(adminId) {
+        const users = await this.getUsersUseCase.execute(adminId);
         return api_response_1.ApiResponse.success({
             data: users,
             statusCode: common_1.HttpStatus.OK,
@@ -90,9 +90,10 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "create", null);
 __decorate([
-    (0, common_1.Get)(),
+    (0, common_1.Get)(""),
+    __param(0, (0, admin_id_decorator_1.AdminId)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getAll", null);
 __decorate([
@@ -107,7 +108,7 @@ __decorate([
     __param(0, (0, common_1.Param)("id", new common_1.ParseUUIDPipe({ version: "7" }))),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_user_dto_1.UpdateUserDto]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "update", null);
 __decorate([

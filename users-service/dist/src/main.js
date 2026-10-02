@@ -11,12 +11,12 @@ async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.useGlobalFilters(new domain_exception_filter_1.DomainExceptionsFilter());
     app.enableCors({
-        origin: "http://localhost:3000",
+        origin: process.env.NESTJS_ALLOWED_ORIGINS,
         methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
         credentials: true,
     });
     app.use((0, cookie_parser_1.default)());
-    await app.listen(process.env.PORT ?? "3001");
+    await app.listen(process.env.NESTJS_PORT ?? "3001");
 }
 bootstrap();
 //# sourceMappingURL=main.js.map

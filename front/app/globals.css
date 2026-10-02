@@ -115,6 +115,9 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+
+  --turn-duration: 500ms;
+  --turn-ease: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 @layer base {
@@ -141,4 +144,39 @@
   pre {
     font-family: var(--font-geist-mono), monospace;
   }
+}
+
+/* Page slide: forward moves pages to the left, backward to the right. */
+[data-direction="forward"] {
+  --slide-dir: 1;
+}
+
+[data-direction="backward"] {
+  --slide-dir: -1;
+}
+
+@keyframes slide-out {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(var(--slide-dir) * -100%));
+  }
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(calc(var(--slide-dir) * 100%));
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.slide-out {
+  animation: slide-out var(--turn-duration) var(--turn-ease) both;
+}
+
+.slide-in {
+  animation: slide-in var(--turn-duration) var(--turn-ease) both;
 }

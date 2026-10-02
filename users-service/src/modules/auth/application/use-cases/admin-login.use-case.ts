@@ -1,23 +1,24 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { ADMIN_REPOSITORY, ADMIN_SESSION_KEY, ROLES } from "@/domain/constants";
+import { ADMIN_SESSION_KEY, ROLES } from "@/domain/constants";
 import { InvalidCredentialsException } from "@/domain/exceptions/domain.exceptions";
+import { GetAdminByIdUseCase } from "@/modules/admins/application/use-cases/get-admin-by-id.use-case";
 import { checkPassword } from "@/modules/admins/application/utils";
-import { type AdminRepository } from "@/modules/admins/domain/interfaces/admin.interface";
 import { AdminLoginDto } from "@/modules/auth/application/dto/admin-login.dto";
 import { SessionService } from "@/modules/iam/application/services/session.service";
 
 @Injectable()
 export class AdminLoginUseCase {
   constructor(
-    @Inject(ADMIN_REPOSITORY)
-    private readonly adminRepository: AdminRepository,
+    private readonly getAdminByIdUseCase: GetAdminByIdUseCase,
     private readonly sessionService: SessionService,
     private readonly jwtService: JwtService,
   ) {}
 
   async execute(adminLoginDto: AdminLoginDto) {
-    const admin = await this.adminRepository.getByEmail(adminLoginDto.email);
+    const admin = await this.getAdminByIdUseCase.execute({
+      email: adminLoginDto.email,
+    });
 
     if (!admin) {
       throw new InvalidCredentialsException();
@@ -45,6 +46,6 @@ export class AdminLoginUseCase {
       role: ROLES.ADMIN,
     });
 
-    return accessToken;
+    return { admin, accessToken };
   }
 }

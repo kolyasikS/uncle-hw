@@ -20,6 +20,7 @@ let PrismaUserRepository = class PrismaUserRepository {
     }
     async create(user) {
         const data = user_mapper_1.UserMapper.toPersistence(user);
+        console.log("data", data);
         const created = await this.prisma.user.create({
             data,
         });
@@ -27,6 +28,12 @@ let PrismaUserRepository = class PrismaUserRepository {
     }
     async getAll() {
         const found = await this.prisma.user.findMany();
+        return found.map((user) => user_mapper_1.UserMapper.toDomain(user));
+    }
+    async getByAdminId(adminId) {
+        const found = await this.prisma.user.findMany({
+            where: { adminId },
+        });
         return found.map((user) => user_mapper_1.UserMapper.toDomain(user));
     }
     async getByEmail(email) {

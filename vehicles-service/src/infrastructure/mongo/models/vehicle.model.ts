@@ -1,11 +1,12 @@
 import { model, Schema } from "mongoose";
-import type { Vehicle } from "@/domain/entities/vehicle.entity.js";
 
 export interface VehicleDocument {
   make: string;
   model: string;
   year: number | null;
+  photos: string[];
   user_id: string;
+  admin_id: string;
 }
 
 const vehicleSchema = new Schema<VehicleDocument>({
@@ -21,7 +22,16 @@ const vehicleSchema = new Schema<VehicleDocument>({
     type: Number,
     allowNull: true,
   },
+  photos: [
+    {
+      type: String,
+    },
+  ],
   user_id: {
+    type: String,
+    required: true,
+  },
+  admin_id: {
     type: String,
     required: true,
   },

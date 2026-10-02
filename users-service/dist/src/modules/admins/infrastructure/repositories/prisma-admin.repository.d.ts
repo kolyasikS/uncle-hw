@@ -5,4 +5,5 @@ export declare class PrismaAdminRepository implements AdminRepository {
     readonly prisma: PrismaService;
     constructor(prisma: PrismaService);
     getByEmail(email: string): Promise<Admin | null>;
+    create(admin: Admin): Promise<Admin>;
 }

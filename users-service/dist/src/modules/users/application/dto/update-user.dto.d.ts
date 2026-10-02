@@ -1,3 +1,2 @@
 import { CreateUserDto } from "./create-user.dto";
-export declare class UpdateUserDto extends CreateUserDto {
-}
+export type UpdateUserDto = Pick<CreateUserDto, "email">;

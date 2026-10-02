@@ -13,10 +13,15 @@ exports.CreateUserDto = void 0;
 const class_validator_1 = require("class-validator");
 class CreateUserDto {
     email;
+    adminId;
 }
 exports.CreateUserDto = CreateUserDto;
 __decorate([
     (0, class_validator_1.IsEmail)({}, { message: "Email must be a valid email address" }),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "email", void 0);
+__decorate([
+    (0, class_validator_1.IsString)({ message: "Must be a string" }),
+    __metadata("design:type", String)
+], CreateUserDto.prototype, "adminId", void 0);
 //# sourceMappingURL=create-user.dto.js.map

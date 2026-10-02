@@ -5,10 +5,13 @@ export const RABBITMQ_URL = process.env.RABBITMQ_URL ?? "";
 export const REDIS_URL = process.env.REDIS_URL ?? "";
 export const JWT_SECRET = process.env.NESTJS_JWT_SECRET ?? "";
 export const NODE_ENV = process.env.NESTJS_NODE_ENV ?? "development";
+export const MAIL_FROM = process.env.NESTJS_EMAIL_FROM ?? "";
 
 // symbols
 export const ADMIN_REPOSITORY = Symbol("ADMIN_REPOSITORY");
+export const MAIL_REPOSITORY = Symbol("MAIL_REPOSITORY");
 export const USER_REPOSITORY = Symbol("USER_REPOSITORY");
+export const OTP_REPOSITORY = Symbol("OTP_REPOSITORY");
 export const REDIS_CLIENT = Symbol("REDIS_CLIENT");
 export const DATABASE_URL_SYMBOL = Symbol("DATABASE_URL");
 export const REDIS_URL_SYMBOL = Symbol("REDIS_URL");
@@ -43,3 +46,4 @@ export const SESSION_KEYS = {
 export const SESSION_TTL = 60 * 60 * 24 * 7; // 7 days
 export const AUTH_COOKIE_NAME = "ACCESS_TOKEN";
 export const JWT_PAYLOAD = "jwt_payload";
+export const OTP_TTL = 60 * 15; // 15 minutes

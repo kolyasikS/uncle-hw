@@ -1,20 +1,24 @@
 import { type Request, type Response, Router } from "express";
 import { VehicleContainer } from "@/application/containers/vehicle.container.js";
 import { createVehicleSchema } from "@/application/dto/vehicle.dto.js";
+import { setUploadFolder } from "@/application/middlewares/set-upload-folder.middleware";
 import { ApiResponse } from "@/domain/api-response.js";
 import { ACTION_TYPES } from "@/domain/event-types.js";
+import { upload } from "@/infrastructure/config/multer";
+import { VehicleMapper } from "@/infrastructure/mappers/vehicle.mapper";
 
 const router = Router();
 
-router.get("/", async (req, res) => {
-  const vehicles = await VehicleContainer.vehicleService.getAll();
+router.get("/admin/:adminId", async (req, res) => {
+  const adminId = req.params.adminId;
+  const vehicles = await VehicleContainer.vehicleService.getByAdminId(adminId);
 
   res.status(200).json(
     ApiResponse.success({
       statusCode: 200,
       type: ACTION_TYPES.GET_ALL_VEHICLES,
       message: "Vehicles fetched successfully",
-      data: vehicles,
+      data: vehicles.map((vehicle) => VehicleMapper.toHttp(req, res, vehicle)),
     }),
   );
 });
@@ -28,7 +32,7 @@ router.get("/:id", async (req, res) => {
       statusCode: 201,
       type: ACTION_TYPES.GET_VEHICLE,
       message: "Vehicle fetched successfully",
-      data: vehicle,
+      data: VehicleMapper.toHttp(req, res, vehicle),
     }),
   );
 });
@@ -52,7 +56,7 @@ router.post("/", async (req: Request, res: Response) => {
       statusCode: 201,
       type: ACTION_TYPES.VEHICLE_CREATED,
       message: "Vehicle created successfully",
-      data: vehicle,
+      data: VehicleMapper.toHttp(req, res, vehicle),
     }),
   );
 });
@@ -69,7 +73,7 @@ router.put("/:id", async (req, res) => {
       statusCode: 200,
       type: ACTION_TYPES.VEHICLE_UPDATED,
       message: "Vehicle updated successfully",
-      data: updatedVehicle,
+      data: VehicleMapper.toHttp(req, res, updatedVehicle),
     }),
   );
 });
@@ -88,5 +92,28 @@ router.delete("/:id", async (req, res) => {
     }),
   );
 });
+
+router.post(
+  "/:id/photos",
+  setUploadFolder("photos"), // Target folder: uploads/avatars
+  upload.array("photos", 5),
+  async (req: Request, res: Response) => {
+    console.log("photos");
+    const files = req.files as Express.Multer.File[];
+    const vehicleId = req.params.id as string;
+    const updatedVehicle = await VehicleContainer.vehicleService.uploadPhotos(
+      vehicleId,
+      files,
+    );
+
+    res.status(200).send(
+      ApiResponse.success({
+        statusCode: 200,
+        message: "Photos uploaded",
+        data: VehicleMapper.toHttp(req, res, updatedVehicle),
+      }),
+    );
+  },
+);
 
 export default router;

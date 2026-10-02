@@ -6,6 +6,7 @@ export type Vehicle = {
   model: string;
   year: number | null;
   userId: string;
+  photos?: string[];
 };
 
 export type VehicleUser = Vehicle & { user: User | null };

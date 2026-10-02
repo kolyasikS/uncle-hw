@@ -7,10 +7,9 @@ import { UserMapper } from "@/modules/users/infrastructure/mappers/user.mapper";
 @Injectable()
 export class PrismaUserRepository implements UserRepository {
   constructor(readonly prisma: PrismaService) {}
-
   async create(user: User): Promise<User> {
     const data = UserMapper.toPersistence(user);
-
+    console.log("data", data);
     const created = await this.prisma.user.create({
       data,
     });
@@ -20,6 +19,14 @@ export class PrismaUserRepository implements UserRepository {
 
   async getAll(): Promise<User[]> {
     const found = await this.prisma.user.findMany();
+
+    return found.map((user) => UserMapper.toDomain(user));
+  }
+
+  async getByAdminId(adminId: string): Promise<User[]> {
+    const found = await this.prisma.user.findMany({
+      where: { adminId },
+    });
 
     return found.map((user) => UserMapper.toDomain(user));
   }

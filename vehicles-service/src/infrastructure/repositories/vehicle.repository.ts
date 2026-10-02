@@ -8,6 +8,7 @@ export class MongoVehicleRepository implements VehicleRepository {
   async create(vehicle: Vehicle): Promise<Vehicle> {
     const data = VehicleMapper.toPersistence(vehicle);
 
+    console.log("data", data);
     const vehicleModel = new VehicleModel(data);
     await vehicleModel.save();
 
@@ -22,6 +23,12 @@ export class MongoVehicleRepository implements VehicleRepository {
     }
 
     return VehicleMapper.toDomain(deletedVehicle);
+  }
+
+  async getByAdminId(adminId: string): Promise<Vehicle[]> {
+    const vehicles = await VehicleModel.find({ admin_id: adminId });
+
+    return vehicles.map((vehicle) => VehicleMapper.toDomain(vehicle));
   }
 
   async getAll(): Promise<Vehicle[]> {
@@ -45,7 +52,7 @@ export class MongoVehicleRepository implements VehicleRepository {
     const updatedVehicle = await VehicleModel.findByIdAndUpdate(
       vehicle.id,
       data,
-      { new: true },
+      { returnDocument: "after" },
     );
 
     if (!updatedVehicle) {

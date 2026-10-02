@@ -20,8 +20,8 @@ let GetUsersUseCase = class GetUsersUseCase {
     constructor(userRepository) {
         this.userRepository = userRepository;
     }
-    async execute() {
-        const users = await this.userRepository.getAll();
+    async execute(adminId) {
+        const users = await this.userRepository.getByAdminId(adminId);
         return users;
     }
 };

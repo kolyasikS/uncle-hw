@@ -3,9 +3,11 @@ import React from "react";
 import { PrefetchedProvider } from "@/components/app/providers";
 import { SidebarInset } from "@/components/ui/sidebar";
 import { prefetchUsers } from "@/lib/api/users/user.server";
+import { createQueryClient } from "@/lib/config/network/ts-query";
 
 const Layout = async ({ children }: { children: React.ReactNode }) => {
-  const queryClient = await prefetchUsers();
+  const queryClient = createQueryClient();
+  await prefetchUsers(queryClient);
 
   return (
     <PrefetchedProvider state={dehydrate(queryClient)}>

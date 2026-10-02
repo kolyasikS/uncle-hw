@@ -1,7 +1,11 @@
 import { BadRequestException, HttpException, HttpStatus } from "@nestjs/common";
 import { ValidationError } from "class-validator";
-import { getAdminMessages } from "@/domain/messages/admin.messages";
+import {
+  createAdminMessages,
+  getAdminMessages,
+} from "@/domain/messages/admin.messages";
 import { loginMessages } from "@/domain/messages/auth.messages";
+import { otpVerificationMessages } from "@/domain/messages/otp.messages";
 import {
   createUserMessages,
   getUserByIdMessages,
@@ -34,9 +38,30 @@ export class AdminNotFoundException extends HttpException {
   }
 }
 
+export class AdminAlreadyExistsException extends HttpException {
+  constructor(email: string) {
+    super(createAdminMessages.alreadyExists(email), HttpStatus.CONFLICT);
+    this.name = "AdminAlreadyExistsException";
+  }
+}
+
 export class InvalidCredentialsException extends HttpException {
   constructor() {
     super(loginMessages.invalidCredentials, HttpStatus.UNAUTHORIZED);
     this.name = "InvalidCredentialsException";
+  }
+}
+
+export class InvalidOtpException extends HttpException {
+  constructor() {
+    super(otpVerificationMessages.failure, HttpStatus.NOT_FOUND);
+    this.name = "InvalidOtpException";
+  }
+}
+
+export class ExpiredOtpException extends HttpException {
+  constructor() {
+    super(otpVerificationMessages.expired, HttpStatus.NOT_FOUND);
+    this.name = "ExpiredOtpException";
   }
 }

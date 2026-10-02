@@ -9,6 +9,12 @@ class AdminMapper {
     static toPersistence(admin) {
         return {
             email: admin.email,
+            password: admin.password,
+        };
+    }
+    static toHttp(admin) {
+        return {
+            email: admin.email,
         };
     }
 }

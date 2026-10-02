@@ -10,6 +10,7 @@ export class UserCreatedHandler {
       make: "unknown",
       model: "unknown",
       user_id: event.data.userId,
+      admin_id: event.data.adminId,
       year: null,
     });
   }

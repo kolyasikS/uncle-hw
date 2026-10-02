@@ -24,7 +24,7 @@ let SessionService = class SessionService {
     async create(key, id) {
         const sessionId = (0, node_crypto_1.randomUUID)();
         await this.sessionStore.set(`${key}:${sessionId}`, JSON.stringify({
-            id,
+            adminId: id,
         }), constants_1.SESSION_TTL);
         return sessionId;
     }

@@ -38,5 +38,7 @@ export const PrefetchedProvider = ({
   state: DehydratedState;
   children: React.ReactNode;
 }) => {
+  console.log("hydrating queries:", state.queries.length); // must be > 0
+
   return <HydrationBoundary state={state}>{children}</HydrationBoundary>;
 };

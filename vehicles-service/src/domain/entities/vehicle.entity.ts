@@ -10,6 +10,8 @@ export class Vehicle {
     public readonly model: string,
     public readonly year: number | null,
     public readonly userId: string,
+    public readonly adminId: string,
+    public readonly photos?: string[],
   ) {}
 
   static create(createVehicleDto: CreateVehicleDto) {
@@ -19,6 +21,7 @@ export class Vehicle {
       createVehicleDto.model,
       createVehicleDto.year,
       createVehicleDto.user_id,
+      createVehicleDto.admin_id,
     );
   }
 
@@ -27,8 +30,10 @@ export class Vehicle {
       existingVehicle.id,
       updateVehicleDto.make,
       updateVehicleDto.model,
-      updateVehicleDto.year,
+      updateVehicleDto.year ?? existingVehicle.year,
       existingVehicle.userId,
+      existingVehicle.adminId,
+      updateVehicleDto.photos ?? existingVehicle.photos,
     );
   }
 }

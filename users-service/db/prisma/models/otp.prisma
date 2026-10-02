@@ -1,0 +1,8 @@
+model Otp {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  email     String
+  code      String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("otp")
+}

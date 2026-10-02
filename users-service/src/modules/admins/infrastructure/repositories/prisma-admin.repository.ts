@@ -19,4 +19,14 @@ export class PrismaAdminRepository implements AdminRepository {
 
     return AdminMapper.toDomain(found);
   }
+
+  async create(admin: Admin): Promise<Admin> {
+    const data = AdminMapper.toPersistence(admin);
+
+    const created = await this.prisma.admin.create({
+      data,
+    });
+
+    return AdminMapper.toDomain(created);
+  }
 }

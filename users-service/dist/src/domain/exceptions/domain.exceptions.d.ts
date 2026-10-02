@@ -12,6 +12,15 @@ export declare class UserNotFoundException extends HttpException {
 export declare class AdminNotFoundException extends HttpException {
     constructor(email: string);
 }
+export declare class AdminAlreadyExistsException extends HttpException {
+    constructor(email: string);
+}
 export declare class InvalidCredentialsException extends HttpException {
+    constructor();
+}
+export declare class InvalidOtpException extends HttpException {
+    constructor();
+}
+export declare class ExpiredOtpException extends HttpException {
     constructor();
 }

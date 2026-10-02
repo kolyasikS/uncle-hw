@@ -18,3 +18,10 @@ export class VehicleDeleteDBError extends Error {
     this.name = "VehicleDeleteDBError";
   }
 }
+
+export class VehicleUploadError extends Error {
+  constructor() {
+    super(`No photos uploaded.`);
+    this.name = "VehicleUploadError";
+  }
+}

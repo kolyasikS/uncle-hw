@@ -2,6 +2,9 @@ import cors from "cors";
 import express from "express";
 import "dotenv/config";
 import "module-alias/register";
+import morgan from "morgan";
+import "./infrastructure/config/multer.js";
+import path from "node:path";
 import { initializeContainers } from "@/application/containers/index.js";
 import { errorHandler } from "@/domain/errors/handlers/global-error.handler.js";
 import { connectToDB } from "@/infrastructure/config/database.js";
@@ -21,6 +24,11 @@ async function bootstrap() {
       origin: process.env.EXPRESS_ALLOWED_ORIGINS,
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     }),
+  );
+  app.use(morgan("common"));
+  app.use(
+    "/persistance/uploads",
+    express.static(path.join(__dirname, "../persistance/uploads")),
   );
   app.use(express.json());
 

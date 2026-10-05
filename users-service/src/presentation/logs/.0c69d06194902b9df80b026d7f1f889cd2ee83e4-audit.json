@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 30
+    },
+    "auditLog": "/Users/nick/Practice/middle/vehicle-platform-2/users-service/src/presentation/logs/.0c69d06194902b9df80b026d7f1f889cd2ee83e4-audit.json",
+    "files": [
+        {
+            "date": 1791205424993,
+            "name": "/Users/nick/Practice/middle/vehicle-platform-2/users-service/src/presentation/logs/2026-10/05-error.log",
+            "hash": "67f883f3fca511725110535f7d4c5645f2230727ecfcb5f483444d10d6f37edc"
+        }
+    ],
+    "hashType": "sha256"
+}

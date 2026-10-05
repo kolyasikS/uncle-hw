@@ -10,7 +10,6 @@ export const AdminId = createParamDecorator(
     const request = ctx.switchToHttp().getRequest();
 
     const adminId = request.adminId;
-    console.log(request.adminId);
     if (!adminId) {
       throw new UnauthorizedException("Admin ID not found in session context");
     }

@@ -2,6 +2,6 @@ db-dg/
 node_modules/
 .idea/
 \#docker/
-dist/
+**/dist/
 
 *.env

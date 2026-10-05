@@ -9,7 +9,6 @@ export class PrismaUserRepository implements UserRepository {
   constructor(readonly prisma: PrismaService) {}
   async create(user: User): Promise<User> {
     const data = UserMapper.toPersistence(user);
-    console.log("data", data);
     const created = await this.prisma.user.create({
       data,
     });

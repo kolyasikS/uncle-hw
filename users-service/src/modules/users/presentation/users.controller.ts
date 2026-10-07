@@ -20,6 +20,7 @@ import {
   getUserByIdMessages,
   updateUserMessages,
 } from "@/domain/messages/user.messages";
+import { ValidationPipe } from "@/domain/pipes/validation.pipe";
 import { Session } from "@/modules/iam/domain/decorators/auth.decorator";
 import { CreateUserDto } from "@/modules/users/application/dto/create-user.dto";
 import { type UpdateUserDto } from "@/modules/users/application/dto/update-user.dto";
@@ -29,7 +30,6 @@ import { GetUserByIdUseCase } from "@/modules/users/application/use-cases/get-us
 import { GetUsersUseCase } from "@/modules/users/application/use-cases/get-users.use-case";
 import { UpdateUserUseCase } from "@/modules/users/application/use-cases/update-user.use-case";
 import { User } from "@/modules/users/domain/domain/entities/user.entity";
-import { ValidationPipe } from "@/presentation/pipes/validation.pipe";
 
 @Session(ROLES.ADMIN)
 @UsePipes(ValidationPipe)

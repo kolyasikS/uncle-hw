@@ -3,15 +3,20 @@ import {
   Injectable,
   LoggerService as NestLoggerService,
 } from "@nestjs/common";
-import { Logger } from "winston";
-import { LOGGER } from "@/domain/constants";
+import { LOGGER_REPOSITORY } from "@/domain/constants";
+import { type LoggerRepository } from "@/modules/logging/domain/interfaces/logger.interface";
 
 @Injectable()
 export class LoggerService implements NestLoggerService {
-  constructor(@Inject(LOGGER) private readonly logger: Logger) {}
+  constructor(
+    @Inject(LOGGER_REPOSITORY)
+    private readonly loggerRepository: LoggerRepository<
+      string | Record<string, any>
+    >,
+  ) {}
 
   log(message: string | Record<string, any>, context?: string) {
-    this.logger.info({ message, context });
+    this.loggerRepository.log(message, context);
   }
 
   error(
@@ -19,18 +24,18 @@ export class LoggerService implements NestLoggerService {
     trace?: string,
     context?: string,
   ) {
-    this.logger.error({ message, trace, context });
+    this.loggerRepository.error(message, trace, context);
   }
 
   warn(message: string | Record<string, any>, context?: string) {
-    this.logger.warn({ message, context });
+    this.loggerRepository.warn(message, context);
   }
 
   debug(message: string | Record<string, any>, context?: string) {
-    this.logger.debug({ message, context });
+    this.loggerRepository.debug(message, context);
   }
 
   verbose(message: string | Record<string, any>, context?: string) {
-    this.logger.verbose({ message, context });
+    this.loggerRepository.verbose(message, context);
   }
 }

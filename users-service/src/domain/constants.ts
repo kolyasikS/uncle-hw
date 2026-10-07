@@ -18,7 +18,10 @@ export const REDIS_URL_SYMBOL = Symbol("REDIS_URL");
 export const SESSION_STORE = Symbol("SESSION_STORE");
 export const EVENT_BUS = Symbol("EVENT_BUS");
 export const LOGGER = Symbol("LOGGER");
+export const LOGGER_REPOSITORY = Symbol("LOGGER_REPOSITORY");
 export const LOGGER_SERVICE = Symbol("LOGGER_SERVICE");
+export const METRICS_REGISTRY = Symbol("METRICS_REGISTRY");
+export const METRICS_REPOSITORY = Symbol("METRICS_REPOSITORY");
 
 // redis-keys
 export const ADMIN_SESSION_KEY = "admin:session:";

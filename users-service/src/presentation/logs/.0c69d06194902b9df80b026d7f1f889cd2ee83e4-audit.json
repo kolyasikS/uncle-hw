@@ -9,6 +9,11 @@
             "date": 1791205424993,
             "name": "/Users/nick/Practice/middle/vehicle-platform-2/users-service/src/presentation/logs/2026-10/05-error.log",
             "hash": "67f883f3fca511725110535f7d4c5645f2230727ecfcb5f483444d10d6f37edc"
+        },
+        {
+            "date": 1791377654525,
+            "name": "/Users/nick/Practice/middle/vehicle-platform-2/users-service/src/presentation/logs/2026-10/07-error.log",
+            "hash": "534fef2db04c7f94aef527cd8af25926fce12d5959270efe6a3d3c57aabb35b3"
         }
     ],
     "hashType": "sha256"

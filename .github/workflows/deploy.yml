@@ -68,6 +68,34 @@ jobs:
           
           docker push $REGISTRY/uncle/nextjs:$TAG
           docker push $REGISTRY/uncle/nextjs:latest
+          
+      - name: Build and push prometheus (with config)
+        run: |
+          REGISTRY=${{ secrets.ECR_REGISTRY }}
+          TAG=${{ github.sha }}
+
+          docker build \
+            -f ./users-service/config/monitoring/prometheus.Dockerfile \
+            -t $REGISTRY/uncle/prometheus:$TAG \
+            -t $REGISTRY/uncle/prometheus:latest \
+            ./users-service/config/monitoring
+
+          docker push $REGISTRY/uncle/prometheus:$TAG
+          docker push $REGISTRY/uncle/prometheus:latest
+
+      - name: Build and push grafana (with provisioning)
+        run: |
+          REGISTRY=${{ secrets.ECR_REGISTRY }}
+          TAG=${{ github.sha }}
+
+          docker build \
+            -f ./users-service/config/monitoring/grafana.Dockerfile \
+            -t $REGISTRY/uncle/grafana:$TAG \
+            -t $REGISTRY/uncle/grafana:latest \
+            ./users-service/config/monitoring
+
+          docker push $REGISTRY/uncle/grafana:$TAG
+          docker push $REGISTRY/uncle/grafana:latest
 
   # ----------------------------------------
   # JOB 2: Deploy to EC2

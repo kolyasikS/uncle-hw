@@ -4,4 +4,4 @@ node_modules/
 \#docker/
 **/dist/
 
-*.env
+**/*.env

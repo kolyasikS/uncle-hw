@@ -39,13 +39,13 @@ services:
   prometheus:
     image: prom/prometheus:v2.55.1
     command:
-      - --config.file=/etc/prometheus/prometheus.yml
+      - --config.file=/etc/prometheus/prometheus.prod.yml
       - --storage.tsdb.path=/prometheus
       - --storage.tsdb.retention.time=15d
     ports:
       - "127.0.0.1:9090:9090"
     volumes:
-      - ./users-service/monitoring/docker/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./users-service/config/monitoring/prometheus.prod.yml:/etc/prometheus/prometheus.prod.yml:ro
       - prometheus_data:/prometheus
     depends_on:
       - users-service
@@ -62,7 +62,7 @@ services:
       - "3004:3000"
     volumes:
       - grafana_data:/var/lib/grafana
-      - ./users-service/monitoring/docker/provisioning:/etc/grafana/provisioning:ro
+      - ./users-service/config/monitoring/provisioning:/etc/grafana/provisioning:ro
     depends_on:
       - prometheus
     restart: always
